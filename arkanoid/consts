@@ -1,0 +1,4 @@
+from st7789 import *
+
+class Consts:
+    background = ST7789.rgb(0x00, 0x00, 0x00)

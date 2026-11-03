@@ -1,0 +1,171 @@
+Protokołu komunikacyjny 
+- opracowanie (zebranie wymaganych parametrów, sposobu ich kodowania dogodnego do przetwarzania po stronie STM32, obliczenie możliwości protokołu - ilość ramek tekstowych mogących się zmieścić w pojedynczym pakiecie danych (ograniczenie NFCTag - mailbox'a)) : 8h
+- implementacja protokołu po stronie STM32: 16h
+- przygotowanie iOS app do nowego protokołu - refaktoryzacja aktualnego kodu wysyłania po NFC: 8h
+- implementacja protokołu w iOS app: 14h
+- testy implementacji i implementacja edge case'ów: 12h
+Obsługa tekstu:
+- opracowanie algorytmu najmniej pamięciowo wymagającego umożliwiającego skalowanie fontów: 10h
+- opracowanie algorytmu rysującego fonty: 4h
+- implementacja algorytmu rysującego: 10h
+- dodanie funkcjonalności justowania fontu left, center, right: 6h
+- obsługa inwersji koloru - wyświetlanie czcionek na czarnym tle: 3h
+- dobranie parametrów LUM dla wyświetlacz ePaper ( wiele prób ): 4h
+Fonty:
+- opracowanie algorytm tworzący bitmap fonty z TTF fontów w Python: 8h
+- stworzenie fontów 16 i 20px: 4h
+- testy fontów: 4h
+- opracowanie docelowego zestawu fontów 16 i 24 bez paddingu istniejącego dla małych liter (poprawki algorytmu python, ręczne zmiany bitmap, masa prób): 8h
+Bin file - bootloader:
+- zmiana sposobu wysyłania plików binarnych (wysyłanie 20kB binarki nie mieściła się w czasie 20s sesji NFC) (iOS i STM32): 13h
+- dostosowanie protokołu do 2 sesji wysyłania binarki (iOS, STM32): 6h
+- testy nowego update w różnych przypadkach np. wysłania 2 razy części pierwszej itp.: 2h
+
+
+
+ios application:
+Prezentacja wyświetlacza Tag'a: (suma 50)
+- rysowanie tekstu: 8h
+- implementacja rysowania tekstu fontem taga ( przeniesienie implementacji z TAG'a): 16h
+- rysowanie linii: 6h
+- rysowanie obrazków: 8h
+- zaznaczanie tekstu: 2h
+- zaznaczanie linii: 2h
+- zaznaczanie obrazków : 2h
+- odświeżanie natychmiastowe zmieniających się parametrów obrazu: 6h
+Picker: (suma 15)
+- wybór pomiędzy (Variables, Texts, Lines, Images): 8h
+- dodawanie nowego elementu: 1h
+- inwersja kolorów: 4h
+- wyświetlanie przefiltrowanej (po Variables, Texts, Lines, Images) listy: 2h
+Edytor Variable: (suma 25)
+- wprowadzanie ID elementu: 1h
+- wyświetlanie typu elementu: Variable: 1h
+- wybór typu variable ( Text, Letter, Number, Date ): 4h
+- wprowadzanie wartości dla Text, Letter, Number, Date: 6h
+- zmiana justowania (left, center, right): 1h
+- zmiana fontu i rozmiaru: 4h
+- wprowadzanie pozycjonowania X, Y, Lenght: 2h
+- obsługa klawiatury i slider'a: 4h
+- obsługa Cancel, Save, Delete: 2h
+Edytor Text: (suma 14)
+- wprowadzanie ID elementu: 1h
+- wyświetlanie typu elementu: Text: 1h
+- wprowadzanie wartości: 1h
+- blokowanie justowania: 1h
+- zmiana fontu i rozmiaru: 2h
+- wprowadzanie pozycjonowania X, Y, Lenght: 2h
+- obsługa klawiatury i slider'a: 4h
+- obsługa Cancel, Save, Delete: 2h
+Line: (suma 14)
+- wprowadzanie ID elementu: 1h
+- wyświetlanie typu elementu: Line: 1h
+- wybór Horizontal, Vertical: 4h
+- wprowadzanie pozycjonowania X, Y, Lenght, Width: 2h
+- obsługa klawiatury i slider'a: 4h
+- obsługa Cancel, Save, Delete: 2h
+Image: (suma 27)
+- wprowadzanie ID elementu: 1h
+- wyświetlanie typu elementu: Image: 1h
+- wybór Dithering, Contrast (wraz z implementacją): 14h
+- wybór pliku, przycinanie pliku: 6h
+- przygotowanie obrazu do wysłania do taga (obróbka do mapy bitowej): 6h
+- wprowadzanie pozycjonowania X, Y, Lenght, Contrast: 2h
+- obsługa klawiatury i slider'a: 2h
+- obsługa Cancel, Save, Delete: 1h
+Import / Export: (suma 34)
+- serializowanie do pliku danych obrazu: 6h
+- zapisywanie pliku LUM i JSON: 10h
+- modyfikacja bazy danych pod nowy typ TEMPLATE: 4h
+- Export pliku: 8h
+- Import pliku: 6h
+Select Template: (suma 13)
+- nowy ekran z listą template'ów: 3h
+- dodawanie nowego template'u: 6h
+- zmiana flow aplikacji: 4h
+
+Redsign: (suma 44)
+- refaktor rozwiązania do nowego flow (prace niezakończone): 16h
+- wprowadzanie zmian w UI dostosowanie do nowego design (prace niezakończone): 28h
+
+
+
+-------------------------------------------
+- wprowadzanie liter w variable edytorze wraz z obsługą klawiatury, poprawa obsługi klawiatury dla dithering edytora: 2h
+- wyróżnienie w kolekcji assetów przy pomocy trójkąta z ikoną: 1h
+- dodanie meni w managerze template'ów, dodawanie do głównej listy z templateów, dolne meni z create new, przepisywanie plików do nowego asseta. refacotro rozwiązania po ustaleniach telefonicznych: 5h
+- edycja z głównego ekranu: 1.5h
+- import / expoert / delete: 2h
+- dostosowanie edycji varable/text zamrożenie zmiany czcionek (jeszcze należy dorobić wybór czcionek w TEXT): 0.5h
+- zmiana odświeżania image'y na select template: 0.5h
+- usunięcie kilku glitch'y / usterek w flow edycji templatów: 1h
+- wysyłanie canvasa: 2h
+- wysyłanie text: 1.5h
+- edycja przed wysłaniem: 1.5h
+- zapisywanie zmian w edycji: 1.5h
+- wybór Variable Canvas All + refactor wysyłania + usuwanie glitchy: 2.5h
+- edycja nazwy w Navigation Bar: 1h
+------------------------------------------- 23.5
+- opracowanie menu rozwijalnego, animacje i zachowanie: 3.5h
+- drobne poprawki komponentów: 0.5h
+- refactor pobierania assetów z bazy danych: 1h
+- search i menu z dostosowanie background (wiązało się z refactoringiem): 3.5h
+- search wycentrowany i szuka ze spacją: 0.5h
+- kosmetyczne zmiany i poprawki (po naciśnięciu szukajki miała od razu pojawiać się klawiatura, nie działa usuwanie contentu z głównego ekranu poprzez long-press, 
+      naciśnięcie template'u przekierowuje do template'ów zamiast do strony ze zmiennymi i wysyłaniem, 
+      naciśnięcie na tekst pod elementem na ekranie głównym prowadzi do dodawania nowego contentu statycznego lub dynamicznego w zależności od typu elementu): 1h
+- dodanie nowych pól do JSON'a oraz ich implementacja w ViewModel'ach ponadto edytor numerów z dostosowaniem stylu oraz wpisywania, dateTime formatter (part 1): 2.5h
+- numeric editor z ilością digits i wypełnianiem zerami: 2h
+- date time picker oraz format picker a także zachowanie przełączanie formatów, braku godziny itp. zachowania: 3h
+- edycja variabli przed wysłaniem (numeric, letter, date, text) + zmiana w formatowaniu daty dostosowanie do obsługi Locale'i: 3h
+------------------------------------------- 20.5
+- cache dla obrazów przeprocesowanych (dethering, contrast): 2h
+- auto increment and update wraz z aktualizacją obrazka: 3h
+- edycja obsługa klawiatury, ujednolicenie klawiatur w edytorach, selekcja w edycji na podglądzie (rozwaliłem selekcję w template - do naprawy), i kilka mniejszych glitch'y naprawiłem: 4h
+- poprawki ze zgłoszenia part 1: 2.5h
+- inwersja kolorów images: 2h
+- poprawki ze zgłoszenia part 1: 2.5h
+- tworzenie images, refactor procesu generowania obrazka, usunięcie artefaktów z pliku lum: 6h 
+
+
+Poprawki part 1
+elementy, które wyszły w testach do dopracowania w Template creator:
+1) Variable -> Text -> Dafualt Value i Szerokość Pola Tekstowego: W momencie dodania nowej instancji variable powinna tu się defaultowo ustawiać jakaś wartość zarówno dla szerokości pola jak i Default Value. Niech to może zawsze będzie tekst "Variable" o odpowiadającej mu szerokości pola w rozmiarze czcionki 32. Chodzi o to żeby po prostu od razu było widoczne co się dodaje.
+- zrobione
+2) Variable -> Text -> Dafualt Value i Szerokość Pola Tekstowego: Tak jak powyżej, niech defaultowo pojawia się "Text" i odpowiadająca mu szerokość pola w rozmiarze czcionki 32.
+- zrobione
+Notatka 1: Dopuszczamy możliwość usunięcia wartości defaultowej i zostawienia pustego variable
+3) Variable -> Number: Powinno wyglądać tak jak Letter (Letter jest ok)
+- zrobione
+4) Variable -> Date&Time: Tutaj kwestia wypełnienia pustych przestrzeni żeby między "DATA GODZINA" a "Auto Update" było te 16jedn. odstępu
+- nie dotyczy zmieniono layout
+5) Variable -> Date&Time: Po wyborze Date&Time powinien się od razu ustawić. Aktualnie pojawia się dopiero po naciśnięciu daty lub czasu.
+- zrobione
+6) Variable -> Number: Tak jak powyżej po wyborze tego typu powinna się ustawiać wartość numeryczna.
+- zrobion
+7) Variable -> Date&Time: Czy nie miało tu być jeszcze możliwości wyboru formatu?
+- zrobion
+8) Text: Co z tym wyborem czcionki z iphone'a bo wiem, że Pan nad tym pracował, ale na razie to chyba jeszcze nie działa (?)
+- DO ROZWAŻENIA!
+9) Line: Dodawajmy z defaultu linię poziomą na całą szerokość ekranu i w połowie jego wysokości.
+- zrobione
+10) Dowolna instancja -> utrzwórz nową -> cancel: i tak się tworzy nowa instancja a nie powinna. 
+- fix zrobiony
+11) Image: Tutaj tak samo jako powyżej, niech nowy obraz zawsze pojawia się z defaultu na środku.
+- zrobione
+12) Image: Tam gdzie jest nazwa pliku, w momencie kiedy jeszcze nie jest wybrany, czy możemy wyświetlić tekst "Select Image"?
+- dodałem placeholder "Select an image"
+13) Notatka 2: W przypadku wszystkich klawiatur numerycznych przydałoby się przenieść przycisk usuwania na lewą stronę, a po prawej dać przycisk "OK" lub coś w tym rodzaju - czy to możliwe? Czasami cięzko jest to zatwierdzić i zmienić focus.
+- zmieniłem klawiaturę nie na numeryczną ale z liczbami i return
+
+Poprawki part 2
+1) powrócił problem przestawiania się zmiennych w dynamic content (zmiana kolejności przy inkrementacji)
+- poprawion
+2) miałem też raz problem, że miałem kolejno wartości: (...), 007, 008, 009, 1. Ale nie udało mi się go powtórzyć i chyba wyniknął on właśnie z tej zamiany kolejnością.
+- poprawione
+3) dodaj proszę to żeby po naciśnięciu w tamplete'ach "Create Dynamic Content" wracało do ekranu głównego
+- zrobione
+4) aktualizuje miniaturki o zmiany ale dopiero po przejściu między ekranami - udało Ci się w końcu coś z tym wymyślić?
+- zrobione
+5) przy wpisywaniu wartości parametru - np. pozycij Y, jak wpisuję bardzo dużą wartość (większą niż max Y) to wysypuje to appke
+- zabezpieczyłem
